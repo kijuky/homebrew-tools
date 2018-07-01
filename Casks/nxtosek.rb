@@ -40,6 +40,7 @@ cask 'nxtosek' do
         out.write(file.read)
       end
       system_command '/usr/bin/unzip', args: [ '-d', "#{staged_path}/bin", "#{staged_path}/nexttool_osx.zip" ]
+      system_command '/bin/rm', args: [ "#{staged_path}/nexttool_osx.zip" ]
     end
 
     # modify tool_gcc.mak
