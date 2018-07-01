@@ -17,31 +17,33 @@ cask 'nxtosek' do
 
     # patch linker script
     require 'open-uri'
-    open('http://lejos-osek.sourceforge.net/installation_mac_files/sam7_ecrobot.lds') do |file|
-      open("#{staged_path}/ecrobot/c/sam7_ecrobot.lds", 'w') do |out|
+    open('http://lejos-osek.sourceforge.net/installation_mac_files/sam7_ecrobot.lds') { |file|
+      open("#{staged_path}/ecrobot/c/sam7_ecrobot.lds", 'w') { |out|
         out.write(file.read)
-      end
-    end
+      }
+    }
 
     # extract sg.exe
-    open('http://www.toppers.jp/download.cgi/osek_os-1.1.lzh') do |file|
-      open("#{staged_path}/osek_os-1.1.lzh", 'w+b') do |out|
+    require 'open-uri'
+    open('http://www.toppers.jp/download.cgi/osek_os-1.1.lzh') { |file|
+      open("#{staged_path}/osek_os-1.1.lzh", 'w+b') { |out|
         out.write(file.read)
-      end
+      }
       system_command '/usr/local/bin/unar', args: [ '-o', "#{staged_path}/osek_os-1.1", "#{staged_path}/osek_os-1.1.lzh" ]
       system_command '/bin/mv', args: [ "#{staged_path}/osek_os-1.1/toppers_osek/sg/sg.exe", "#{staged_path}/toppers_osek/sg" ]
       system_command '/bin/rm', args: [ "#{staged_path}/osek_os-1.1.lzh" ]
       system_command '/bin/rm', args: [ '-r', "#{staged_path}/osek_os-1.1" ]
-    end
+    }
 
     # extract nexttool
-    open('http://bricxcc.sourceforge.net/nexttool_osx.zip') do |file|
-      open("#{staged_path}/nexttool_osx.zip", 'w+b') do |out|
+    require 'open-uri'
+    open('http://bricxcc.sourceforge.net/nexttool_osx.zip') { |file|
+      open("#{staged_path}/nexttool_osx.zip", 'w+b') { |out|
         out.write(file.read)
-      end
+      }
       system_command '/usr/bin/unzip', args: [ '-d', "#{staged_path}/bin", "#{staged_path}/nexttool_osx.zip" ]
       system_command '/bin/rm', args: [ "#{staged_path}/nexttool_osx.zip" ]
-    end
+    }
 
     # modify tool_gcc.mak
     open("#{staged_path}/ecrobot/tool_gcc.mak.tmp", 'w') { |o|
@@ -53,8 +55,8 @@ cask 'nxtosek' do
                    .gsub('RAMBOOT   = ramboot.exe', 'RAMBOOT   = fwexec')
                    .gsub('TARGET_PREFIX :=arm-elf', 'TARGET_PREFIX :=arm-none-eabi')
       }
+      system_command '/bin/mv', args: [ "#{staged_path}/ecrobot/tool_gcc.mak.tmp", "#{staged_path}/ecrobot/tool_gcc.mak" ]
     }
-    system_command '/bin/mv', args: [ "#{staged_path}/ecrobot/tool_gcc.mak.tmp", "#{staged_path}/ecrobot/tool_gcc.mak" ]
 
     # modify ecrobot.mak
     open("#{staged_path}/ecrobot/ecrobot.mak.tmp", 'w') { |o|
@@ -63,8 +65,8 @@ cask 'nxtosek' do
                    .gsub('$(shell cygpath -m -w ${TOPPERS_OSEK_OIL_SOURCE})', '${TOPPERS_OSEK_OIL_SOURCE}')
                    .gsub('$(shell cygpath -m -w ${TOPPERS_OSEK_ROOT_SG})', '${TOPPERS_OSEK_ROOT_SG}')
       }
+      system_command '/bin/mv', args: [ "#{staged_path}/ecrobot/ecrobot.mak.tmp", "#{staged_path}/ecrobot/ecrobot.mak" ]
     }
-    system_command '/bin/mv', args: [ "#{staged_path}/ecrobot/ecrobot.mak.tmp", "#{staged_path}/ecrobot/ecrobot.mak" ]
 
     # modify ecrobot++.mak
     open("#{staged_path}/ecrobot/ecrobot++.mak.tmp", 'w') { |o|
@@ -73,8 +75,8 @@ cask 'nxtosek' do
                    .gsub('$(shell cygpath -m -w ${TOPPERS_OSEK_OIL_SOURCE})', '${TOPPERS_OSEK_OIL_SOURCE}')
                    .gsub('$(shell cygpath -m -w ${TOPPERS_OSEK_ROOT_SG})', '${TOPPERS_OSEK_ROOT_SG}')
       }
+      system_command '/bin/mv', args: [ "#{staged_path}/ecrobot/ecrobot++.mak.tmp", "#{staged_path}/ecrobot/ecrobot++.mak" ]
     }
-    system_command '/bin/mv', args: [ "#{staged_path}/ecrobot/ecrobot++.mak.tmp", "#{staged_path}/ecrobot/ecrobot++.mak" ]
 
     # make
     system_command '/usr/bin/make', args: [ '-C', "#{staged_path}/ecrobot/c++", 'all' ], print_stderr: false
