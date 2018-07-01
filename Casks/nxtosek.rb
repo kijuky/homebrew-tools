@@ -9,6 +9,7 @@ cask 'nxtosek' do
   depends_on formula: 'unar'
   depends_on formula: 'wine'
   depends_on cask: 'yagarto-46'
+  depends_on cask: 'nxt-fantom-driver'
 
   # https://qiita.com/tac0x2a/items/b1d82050c660935765ef
   postflight do
