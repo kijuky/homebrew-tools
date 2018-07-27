@@ -5,6 +5,7 @@ cask 'nxtosek' do
   url "https://sourceforge.net/projects/lejos-osek/files/nxtOSEK/nxtOSEK_#{version}.zip/download"
   name 'nxtOSEK'
   homepage 'http://lejos-osek.sourceforge.net/jp/index.htm'
+  container type: :generic_unar
 
   depends_on formula: 'unar'
   depends_on formula: 'wine'
