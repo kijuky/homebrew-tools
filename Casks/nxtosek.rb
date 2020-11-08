@@ -8,7 +8,7 @@ cask 'nxtosek' do
   container type: :generic_unar
 
   depends_on formula: 'unar'
-  depends_on formula: 'wine'
+  depends_on formula: 'wine-stable'
   depends_on cask: 'yagarto-46'
   depends_on cask: 'nxt-fantom-driver'
 
